@@ -1,2 +1,3 @@
 BUILD/
 mbed-os/
+Makefile linguist-detectable=false
