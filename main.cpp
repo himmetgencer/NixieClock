@@ -1,23 +1,21 @@
-/* mbed Microcontroller Library
- * Copyright (c) 2019 ARM Limited
- * SPDX-License-Identifier: Apache-2.0
- */
-
 #include "mbed.h"
-#include "platform/mbed_thread.h"
 
-
-// Blinking rate in milliseconds
-#define BLINKING_RATE_MS                                                    500
-
+BusOut ports(p11, p12, p13, p14);
+DigitalOut statusLed(LED1);
 
 int main()
 {
-    // Initialise the digital pin LED1 as an output
-    DigitalOut led(LED1);
+    while (1) {
+        for (int i = 0; i < 10; i++) {
+            ports = i;
+            //statusLed = !statusLed;
+            ThisThread::sleep_for(250);
+        }
 
-    while (true) {
-        led = !led;
-        thread_sleep_for(BLINKING_RATE_MS);
+        for (int i = 8; i > 0; i--) {
+            ports = i;
+            //statusLed = !statusLed;
+            ThisThread::sleep_for(250);
+        }        
     }
 }
