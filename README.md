@@ -11,6 +11,7 @@
 | Mbed OS 6.3 + Mbed CLI        |
 | Stlink V2 Mini                |
 | STM32 ST-Link Utility         |
+| Custom PCB                    |
 
 ## TODO List
 - [x] Test Nixie Tubes and Drivers
