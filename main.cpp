@@ -18,9 +18,9 @@ int main()
     while (true) {
 
         NIXIE::timeToDigits(digit);
-        //digit1.setDigit(digit.hour_digit1);
-        //digit2.setDigit(digit.hour_digit2);
-        //digit3.setDigit(digit.minute_digit1);
+        digit1.setDigit(digit.hour_digit1);
+        digit2.setDigit(digit.hour_digit2);
+        digit3.setDigit(digit.minute_digit1);
         digit4.setDigit(digit.minute_digit2);
         status = !status;
         ThisThread::sleep_for(250);
