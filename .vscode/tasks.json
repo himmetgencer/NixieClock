@@ -17,7 +17,7 @@
             "message": 5
         }
     },
-    "args": ["compile", "--profile=release", "-t", "GCC_ARM", "-m", "LPC1768"],
+    "args": ["compile", "--profile=release", "-t", "GCC_ARM", "-m", "bluepill"],
     "linux": {
         "command": "mbed"
     },

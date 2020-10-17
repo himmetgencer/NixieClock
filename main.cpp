@@ -1,21 +1,29 @@
 #include "mbed.h"
+#include "PinDefinitions.h"
+#include "nixie.h"
 
-BusOut ports(p11, p12, p13, p14);
-DigitalOut statusLed(LED1);
+DigitalOut status(statusLed);
+
+NIXIE digit1(DIGIT1_PINA, DIGIT1_PINB, DIGIT1_PINC, DIGIT1_PIND);
+NIXIE digit2(DIGIT2_PINA, DIGIT2_PINB, DIGIT2_PINC, DIGIT2_PIND);
+NIXIE digit3(DIGIT3_PINA, DIGIT3_PINB, DIGIT3_PINC, DIGIT3_PIND);
+NIXIE digit4(DIGIT4_PINA, DIGIT4_PINB, DIGIT4_PINC, DIGIT4_PIND);
+
+Clock_Digit digit;
 
 int main()
 {
-    while (1) {
-        for (int i = 0; i < 10; i++) {
-            ports = i;
-            //statusLed = !statusLed; 
-            ThisThread::sleep_for(250);
-        }
+	set_time(648810000);  // Set RTC time 24.07.2020 09:00:00
+	
+    while (true) {
 
-        for (int i = 8; i > 0; i--) {
-            ports = i;
-            //statusLed = !statusLed;
-            ThisThread::sleep_for(250);
-        }        
+        NIXIE::timeToDigits(digit);
+        //digit1.setDigit(digit.hour_digit1);
+        //digit2.setDigit(digit.hour_digit2);
+        //digit3.setDigit(digit.minute_digit1);
+        digit4.setDigit(digit.minute_digit2);
+        status = !status;
+        ThisThread::sleep_for(250);
+	
     }
 }
