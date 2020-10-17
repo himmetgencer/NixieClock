@@ -31,6 +31,5 @@
 - http://www.diymodules.org/eagle-show-library?type=usr&id=2090
 
 ## Authors
-[Himmet  GENCER](https://www.linkedin.com/in/himmet-gencer-214b7020/)
-
-[Tolga ÇELEBİ](https://www.linkedin.com/in/tolga-%C3%A7elebi-337535146/)
+- [Himmet  GENCER](https://www.linkedin.com/in/himmet-gencer-214b7020/)
+- [Tolga ÇELEBİ](https://www.linkedin.com/in/tolga-%C3%A7elebi-337535146/)
