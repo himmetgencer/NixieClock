@@ -20,7 +20,7 @@ PinName DIGIT4_PINB = B7;
 PinName DIGIT4_PINC = B8;
 PinName DIGIT4_PIND = B9;
 
-PinName HOUR_BUTTON_PIN = C14;
-PinName MINUTE_BUTTON_PIN = C15;
+PinName HOUR_BUTTON_PIN = A1;
+PinName MINUTE_BUTTON_PIN = A0;
 
 PinName statusLed = LED1;

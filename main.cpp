@@ -10,28 +10,36 @@ NIXIE digit2(DIGIT2_PINA, DIGIT2_PINB, DIGIT2_PINC, DIGIT2_PIND);
 NIXIE digit3(DIGIT3_PINA, DIGIT3_PINB, DIGIT3_PINC, DIGIT3_PIND);
 NIXIE digit4(DIGIT4_PINA, DIGIT4_PINB, DIGIT4_PINC, DIGIT4_PIND);
 
-Clock_Digit digit;
-
-PinDetect hourButton(HOUR_BUTTON_PIN);
-PinDetect minuteButton(MINUTE_BUTTON_PIN);
+PinDetect hourButton(HOUR_BUTTON_PIN, PullDown);
+PinDetect minuteButton(MINUTE_BUTTON_PIN, PullDown);
 
 bool hourButtonState = false;
+bool hourButtonHeldState = false;
 bool minuteButtonState = false;
+bool minuteButtonHeldState = false;
 
 void hourButtonPressed(void){
     hourButtonState = true;
 }
 
-void hourButtonReleased(void){
-    hourButtonState = false;
+void hourButtonPressedHeld(void){
+    hourButtonHeldState = true;    
+}
+
+void hourButtonReleased(void){    
+    hourButtonHeldState = false;    
 }
 
 void minuteButtonPressed(void){
-    minuteButtonState = true;
+    minuteButtonState = true;    
 }
 
-void minuteButtonReleased(void){
-    minuteButtonState = false;
+void minuteButtonPressedHeld(void){
+    minuteButtonHeldState = true;    
+}
+
+void minuteButtonReleased(void){    
+    minuteButtonHeldState = false;        
 }
 
 void incrementHour(void){
@@ -56,7 +64,20 @@ void incrementMinute(void){
 
 int main()
 {
+    Clock_Digit digit;
+    
 	set_time(648810000);  // Set RTC time 24.07.2020 09:00:00
+
+    hourButton.attach_asserted(&hourButtonPressed);
+    hourButton.attach_asserted_held(&hourButtonPressedHeld); // Defaults to 1 second
+    hourButton.attach_deasserted(&hourButtonReleased);
+
+    minuteButton.attach_asserted(&minuteButtonPressed);
+    minuteButton.attach_asserted_held(&minuteButtonPressedHeld); // Defaults to 1 second
+    minuteButton.attach_deasserted(&minuteButtonReleased);
+
+    hourButton.setSampleFrequency(); //Defaults to 20ms
+    minuteButton.setSampleFrequency(); //Defaults to 20ms
 	
     while (true) {
 
@@ -66,11 +87,13 @@ int main()
         digit3.setDigit(digit.minute_digit1);
         digit4.setDigit(digit.minute_digit2);
 
-        if(hourButtonState){
+        if(hourButtonState || hourButtonHeldState){
+            hourButtonState = false;
             incrementHour();
         }
 
-        if(minuteButtonState){
+        if(minuteButtonState || minuteButtonHeldState){
+            minuteButtonState = false;
             incrementMinute();
         }
 
