@@ -18,7 +18,7 @@
 - [x] Demo Code on Breadboard
 - [x] Create Nixie Library(Class)
 - [x] RTC Tests
-- [ ] Add RTC settime using buttons
+- [x] Add RTC settime using buttons
 - [ ] Custom PCB Implementation
 - [ ] Boxing
 
