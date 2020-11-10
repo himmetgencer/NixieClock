@@ -64,7 +64,7 @@ void incrementMinute(void){
 
 int main()
 {
-    Clock_Digit digit;
+    NIXIE::Clock_Digit digit;
     
 	set_time(648810000);  // Set RTC time 24.07.2020 09:00:00
 
