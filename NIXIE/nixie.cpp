@@ -22,5 +22,10 @@ void NIXIE::timeToDigits(Clock_Digit &digit)
     digit.hour_digit2 = static_cast<uint8_t>(now_tm->tm_hour % 10);
 
     digit.minute_digit1 = static_cast<uint8_t>(now_tm->tm_min / 10);
-    digit.minute_digit2 = static_cast<uint8_t>(now_tm->tm_min % 10);    
+    digit.minute_digit2 = static_cast<uint8_t>(now_tm->tm_min % 10);
+    
+    /*
+    digit.minute_digit1 = static_cast<uint8_t>(now_tm->tm_sec / 10);
+    digit.minute_digit2 = static_cast<uint8_t>(now_tm->tm_sec % 10);         
+    */
 }

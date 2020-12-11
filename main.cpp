@@ -3,7 +3,7 @@
 #include "nixie.h"
 #include "PinDetect.h"
 
-DigitalOut status(statusLed);
+DigitalOut status(statusLed, 1);
 
 NIXIE digit1(DIGIT1_PINA, DIGIT1_PINB, DIGIT1_PINC, DIGIT1_PIND);
 NIXIE digit2(DIGIT2_PINA, DIGIT2_PINB, DIGIT2_PINC, DIGIT2_PIND);
@@ -64,9 +64,8 @@ void incrementMinute(void){
 
 int main()
 {
-    NIXIE::Clock_Digit digit;
-    
-	set_time(648810000);  // Set RTC time 24.07.2020 09:00:00
+    NIXIE::Clock_Digit digit;    
+	//set_time(648810000);  // Set RTC time 24.07.2020 09:00:00
 
     hourButton.attach_asserted(&hourButtonPressed);
     hourButton.attach_asserted_held(&hourButtonPressedHeld); // Defaults to 1 second
@@ -82,6 +81,7 @@ int main()
     while (true) {
 
         NIXIE::timeToDigits(digit);
+        
         digit1.setDigit(digit.hour_digit1);
         digit2.setDigit(digit.hour_digit2);
         digit3.setDigit(digit.minute_digit1);
@@ -89,16 +89,15 @@ int main()
 
         if(hourButtonState || hourButtonHeldState){
             hourButtonState = false;
-            incrementHour();
+            incrementHour();            
         }
 
         if(minuteButtonState || minuteButtonHeldState){
             minuteButtonState = false;
-            incrementMinute();
+            incrementMinute();        
         }
-
-        status = !status;
-        ThisThread::sleep_for(250);
-	
+        
+        //status = !status;
+        wait_us(100000);
     }
 }
