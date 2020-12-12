@@ -29,3 +29,16 @@ void NIXIE::timeToDigits(Clock_Digit &digit)
     digit.minute_digit2 = static_cast<uint8_t>(now_tm->tm_sec % 10);         
     */
 }
+
+bool NIXIE::checkNewHour(void)
+{
+    time_t now;
+    struct tm *now_tm;
+    now = time(NULL);
+    now_tm = localtime(&now);
+
+    if(now_tm->tm_min == 0 && now_tm->tm_sec == 0)
+        return true;
+    else
+        return false;
+}

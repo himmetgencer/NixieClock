@@ -20,6 +20,7 @@ public:
     NIXIE(PinName PinA, PinName PinB, PinName PinC, PinName PinD);
     void setDigit(uint8_t value);
     static void timeToDigits(Clock_Digit &digit);
+    static bool checkNewHour(void);
 
 private:    
     

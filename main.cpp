@@ -10,6 +10,8 @@ NIXIE digit2(DIGIT2_PINA, DIGIT2_PINB, DIGIT2_PINC, DIGIT2_PIND);
 NIXIE digit3(DIGIT3_PINA, DIGIT3_PINB, DIGIT3_PINC, DIGIT3_PIND);
 NIXIE digit4(DIGIT4_PINA, DIGIT4_PINB, DIGIT4_PINC, DIGIT4_PIND);
 
+NIXIE::Clock_Digit digit;
+
 PinDetect hourButton(HOUR_BUTTON_PIN, PullDown);
 PinDetect minuteButton(MINUTE_BUTTON_PIN, PullDown);
 
@@ -17,9 +19,44 @@ bool hourButtonState = false;
 bool hourButtonHeldState = false;
 bool minuteButtonState = false;
 bool minuteButtonHeldState = false;
+bool animation = true;
+
+void showTime(void);
+void showAnimation(int period);
+void hourButtonPressed(void);
+void hourButtonPressedHeld(void);
+void hourButtonReleased(void);
+void minuteButtonPressed(void);
+void minuteButtonPressedHeld(void);
+void minuteButtonReleased(void);
+void incrementHour(void);
+void incrementMinute(void);
+
+void showTime(void)
+{
+    NIXIE::timeToDigits(digit);
+    
+    digit1.setDigit(digit.hour_digit1);
+    digit2.setDigit(digit.hour_digit2);
+    digit3.setDigit(digit.minute_digit1);
+    digit4.setDigit(digit.minute_digit2);    
+}
+
+void showAnimation(int period)
+{
+    for(uint8_t i=0; i<10; i++)
+    {
+        digit1.setDigit(i);
+        digit2.setDigit(i);
+        digit3.setDigit(i);
+        digit4.setDigit(i);
+        wait_us(period);       
+    }
+}
 
 void hourButtonPressed(void){
     hourButtonState = true;
+    animation = false;
 }
 
 void hourButtonPressedHeld(void){
@@ -27,11 +64,13 @@ void hourButtonPressedHeld(void){
 }
 
 void hourButtonReleased(void){    
-    hourButtonHeldState = false;    
+    hourButtonHeldState = false;
+    animation = true;    
 }
 
 void minuteButtonPressed(void){
-    minuteButtonState = true;    
+    minuteButtonState = true;
+    animation = false;    
 }
 
 void minuteButtonPressedHeld(void){
@@ -39,7 +78,8 @@ void minuteButtonPressedHeld(void){
 }
 
 void minuteButtonReleased(void){    
-    minuteButtonHeldState = false;        
+    minuteButtonHeldState = false;
+    animation = true;        
 }
 
 void incrementHour(void){
@@ -63,9 +103,9 @@ void incrementMinute(void){
 }
 
 int main()
-{
-    NIXIE::Clock_Digit digit;    
+{        
 	//set_time(648810000);  // Set RTC time 24.07.2020 09:00:00
+    showAnimation(100000); //100ms per digit for initial test
 
     hourButton.attach_asserted(&hourButtonPressed);
     hourButton.attach_asserted_held(&hourButtonPressedHeld); // Defaults to 1 second
@@ -78,14 +118,7 @@ int main()
     hourButton.setSampleFrequency(); //Defaults to 20ms
     minuteButton.setSampleFrequency(); //Defaults to 20ms
 	
-    while (true) {
-
-        NIXIE::timeToDigits(digit);
-        
-        digit1.setDigit(digit.hour_digit1);
-        digit2.setDigit(digit.hour_digit2);
-        digit3.setDigit(digit.minute_digit1);
-        digit4.setDigit(digit.minute_digit2);
+    while (true) {             
 
         if(hourButtonState || hourButtonHeldState){
             hourButtonState = false;
@@ -95,9 +128,18 @@ int main()
         if(minuteButtonState || minuteButtonHeldState){
             minuteButtonState = false;
             incrementMinute();        
+        }       
+
+        if(animation && NIXIE::checkNewHour())
+        {
+            showAnimation(50000); //50ms per digit
+            showTime();
+            wait_us(500000); // wait 500ms after animation
         }
-        
+        else
+            showTime();
+
         //status = !status;
-        wait_us(100000);
+        wait_us(100000); //100ms main control loop
     }
 }
